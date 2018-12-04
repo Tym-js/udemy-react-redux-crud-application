@@ -5,6 +5,7 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "@material-ui/core": "3.6.1",
     "axios": "latest",
     "history": "latest",
     "lodash": "4.17.11",
