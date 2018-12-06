@@ -2,6 +2,8 @@ import React from "react"
 import { connect } from "react-redux"
 import { Field, reduxForm } from "redux-form"
 import { Link } from "react-router-dom"
+import Button from "@material-ui/core/Button"
+import TextField from "@material-ui/core/TextField"
 import { deleteEvent, getEvent, putEvent } from "../actions"
 
 class EventsShow extends React.Component {
@@ -22,11 +24,16 @@ class EventsShow extends React.Component {
       type,
       meta: { touched, error }
     } = field
+
     return (
-      <div>
-        <input {...input} placeholder={label} type={type} />
-        {touched && error && <span>{error}</span>}
-      </div>
+      <TextField
+        label={label}
+        type={type}
+        helperText={touched && error}
+        {...input}
+        fullWidth={true}
+        error={touched && error ? true : false}
+      />
     )
   }
 
@@ -36,12 +43,12 @@ class EventsShow extends React.Component {
   }
   async onDeleteClick() {
     const { id } = this.props.match.params
-    console.log(id)
     await this.props.deleteEvent(id)
     this.props.history.push("/")
   }
   render() {
     const { handleSubmit, pristine, submitting, invalid } = this.props
+    const style = { margin: 12 }
     console.log(submitting)
     return (
       <form onSubmit={handleSubmit(this.onSubmit)}>
@@ -61,17 +68,20 @@ class EventsShow extends React.Component {
             component={this.renderField}
           />
         </div>
-        <div>
-          <input
-            type="submit"
-            value="Submit"
-            disabled={pristine || submitting || invalid}
-          />
-          <Link to="/">Cancel</Link>
-          <Link to="/" onClick={this.onDeleteClick}>
-            Delete
-          </Link>
-        </div>
+        <Button
+          type="submit"
+          variant="outlined"
+          style={style}
+          disabled={pristine || submitting || invalid}
+        >
+          Submit
+        </Button>
+        <Button variant="outlined" component={Link} to="/">
+          Cancel
+        </Button>
+        <Button variant="outlined" style={style} onClick={this.onDeleteClick}>
+          Delete
+        </Button>
       </form>
     )
   }
